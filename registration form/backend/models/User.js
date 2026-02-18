@@ -36,7 +36,26 @@ const userSchema = mongoose.Schema({
     dateOfBirth: {
         type: Date,
         required: false
-    }
+    },
+    competition: {
+        type: String,
+        required: function () { return this.role === 'Participant'; }, // Only required for Participants
+        enum: ['Debugging', 'Quiz', 'Gestura', 'Paper Presentation', 'Reels Stopper', 'Promotion', 'Business Analytics', 'Speaking on Stage']
+    },
+    role: {
+        type: String,
+        enum: ['Participant', 'Coordinator'],
+        default: 'Participant'
+    },
+    college: {
+        type: String,
+        required: function () { return this.role === 'Coordinator'; } // Only required for Coordinators
+    },
+    participants: [{
+        name: String,
+        event: String,
+        gender: String
+    }]
 }, {
     timestamps: true
 });
